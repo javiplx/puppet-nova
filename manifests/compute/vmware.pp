@@ -14,6 +14,7 @@
 #
 # [*cluster_name*]
 #   The name of a vCenter cluster compute resource.
+#   (optional for ESX driver)
 #
 # [*apidriver*]
 #   (optional) VMware driver to use, can be:
@@ -54,7 +55,7 @@ class nova::compute::vmware(
   $host_ip,
   $host_username,
   $host_password,
-  $cluster_name,
+  $cluster_name=undef,
   $apidriver='VMwareVCDriver',
   $api_retry_count=5,
   $maximum_objects=100,
@@ -62,6 +63,12 @@ class nova::compute::vmware(
   $use_linked_clone=true,
   $wsdl_location=undef
 ) {
+
+  if $apidriver == 'VMwareVCDriver' {
+    unless $cluster_name {
+      fail( "Must pass cluster_name to Class[Nova::Compute::Vmware]" )
+    }
+  }
 
   nova_config {
     'DEFAULT/compute_driver':      value => "vmwareapi.$apidrier";
