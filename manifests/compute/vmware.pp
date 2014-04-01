@@ -15,6 +15,12 @@
 # [*cluster_name*]
 #   The name of a vCenter cluster compute resource.
 #
+# [*apidriver*]
+#   (optional) VMware driver to use, can be:
+#     VMwareESXDriver (manage individual ESXi hosts)
+#     VMwareVCDriver  (manage clusters on vCenter)
+#   Defaults to 'VMwareVCDriver'.
+#
 # [*api_retry_count*]
 #   (optional) The number of times we retry on failures,
 #   e.g., socket error, etc.
