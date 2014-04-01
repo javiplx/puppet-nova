@@ -75,11 +75,16 @@ class nova::compute::vmware(
     'VMWARE/host_ip':              value => $host_ip;
     'VMWARE/host_username':        value => $host_username;
     'VMWARE/host_password':        value => $host_password;
-    'VMWARE/cluster_name':         value => $cluster_name;
     'VMWARE/api_retry_count' :     value => $api_retry_count;
     'VMWARE/maximum_objects' :     value => $maximum_objects;
     'VMWARE/task_poll_interval' :  value => $task_poll_interval;
     'VMWARE/use_linked_clone':     value => $use_linked_clone;
+  }
+
+  if $apidriver == 'VMwareVCDriver' {
+    nova_config {
+      'VMWARE/cluster_name':         value => $cluster_name;
+    }
   }
 
   if $wsdl_location {
