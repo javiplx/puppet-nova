@@ -57,6 +57,7 @@ describe 'nova::compute::vmware' do
 
     it 'configures right vmwareapi driver' do
       should contain_nova_config('DEFAULT/compute_driver').with_value('vmwareapi.VMwareESXDriver')
+      should_not contain_nova_config('VMWARE/cluster_name')
     end
   end
 end
