@@ -49,6 +49,7 @@ class nova::compute::vmware(
   $host_username,
   $host_password,
   $cluster_name,
+  $apidriver='VMwareVCDriver',
   $api_retry_count=5,
   $maximum_objects=100,
   $task_poll_interval=5.0,
@@ -57,7 +58,7 @@ class nova::compute::vmware(
 ) {
 
   nova_config {
-    'DEFAULT/compute_driver':      value => 'vmwareapi.VMwareVCDriver';
+    'DEFAULT/compute_driver':      value => "vmwareapi.$apidrier";
     'VMWARE/host_ip':              value => $host_ip;
     'VMWARE/host_username':        value => $host_username;
     'VMWARE/host_password':        value => $host_password;
