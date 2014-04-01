@@ -64,6 +64,11 @@ class nova::compute::vmware(
   $wsdl_location=undef
 ) {
 
+  if $apidriver != 'VMwareVCDriver' and $apidriver != 'VMwareESXDriver' {
+    fail( "Unknown VMware driver type '$apidriver'" )
+  }
+
+
   if $apidriver == 'VMwareVCDriver' {
     unless $cluster_name {
       fail( "Must pass cluster_name to Class[Nova::Compute::Vmware]" )
