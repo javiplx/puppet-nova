@@ -52,7 +52,7 @@ describe 'nova::compute::vmware' do
 
   context 'with ESX driver' do
     before :each do
-      params.merge!({apidriver: => 'VMwareESXDriver'})
+      params.merge!({:apidriver => 'VMwareESXDriver'})
     end
 
     it 'configures right vmwareapi driver' do
