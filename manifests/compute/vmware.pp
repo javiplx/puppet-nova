@@ -14,6 +14,13 @@
 #
 # [*cluster_name*]
 #   The name of a vCenter cluster compute resource.
+#   (optional for ESX driver)
+#
+# [*apidriver*]
+#   (optional) VMware driver to use, can be:
+#     VMwareESXDriver (manage individual ESXi hosts)
+#     VMwareVCDriver  (manage clusters on vCenter)
+#   Defaults to 'VMwareVCDriver'.
 #
 # [*api_retry_count*]
 #   (optional) The number of times we retry on failures,
@@ -48,7 +55,8 @@ class nova::compute::vmware(
   $host_ip,
   $host_username,
   $host_password,
-  $cluster_name,
+  $cluster_name=undef,
+  $apidriver='VMwareVCDriver',
   $api_retry_count=5,
   $maximum_objects=100,
   $task_poll_interval=5.0,
@@ -56,16 +64,32 @@ class nova::compute::vmware(
   $wsdl_location=undef
 ) {
 
+  if $apidriver != 'VMwareVCDriver' and $apidriver != 'VMwareESXDriver' {
+    fail( "Unknown VMware driver type '$apidriver'" )
+  }
+
+
+  if $apidriver == 'VMwareVCDriver' {
+    unless $cluster_name {
+      fail( "Must pass cluster_name to Class[Nova::Compute::Vmware]" )
+    }
+  }
+
   nova_config {
-    'DEFAULT/compute_driver':      value => 'vmwareapi.VMwareVCDriver';
+    'DEFAULT/compute_driver':      value => "vmwareapi.$apidriver";
     'VMWARE/host_ip':              value => $host_ip;
     'VMWARE/host_username':        value => $host_username;
     'VMWARE/host_password':        value => $host_password;
-    'VMWARE/cluster_name':         value => $cluster_name;
     'VMWARE/api_retry_count' :     value => $api_retry_count;
     'VMWARE/maximum_objects' :     value => $maximum_objects;
     'VMWARE/task_poll_interval' :  value => $task_poll_interval;
     'VMWARE/use_linked_clone':     value => $use_linked_clone;
+  }
+
+  if $apidriver == 'VMwareVCDriver' {
+    nova_config {
+      'VMWARE/cluster_name':         value => $cluster_name;
+    }
   }
 
   if $wsdl_location {

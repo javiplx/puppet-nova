@@ -49,4 +49,15 @@ describe 'nova::compute::vmware' do
       should contain_nova_config('VMWARE/wsdl_location').with_value(params[:wsdl_location])
     end
   end
+
+  context 'with ESX driver' do
+    before :each do
+      params.merge!({:apidriver => 'VMwareESXDriver'})
+    end
+
+    it 'configures right vmwareapi driver' do
+      should contain_nova_config('DEFAULT/compute_driver').with_value('vmwareapi.VMwareESXDriver')
+      should_not contain_nova_config('VMWARE/cluster_name')
+    end
+  end
 end
