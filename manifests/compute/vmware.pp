@@ -76,7 +76,7 @@ class nova::compute::vmware(
   }
 
   nova_config {
-    'DEFAULT/compute_driver':      value => "vmwareapi.$apidrier";
+    'DEFAULT/compute_driver':      value => "vmwareapi.$apidriver";
     'VMWARE/host_ip':              value => $host_ip;
     'VMWARE/host_username':        value => $host_username;
     'VMWARE/host_password':        value => $host_password;
