@@ -9,6 +9,7 @@ class nova::compute::smartdc {
     'smartdc/mapi_url':            value => "http://mapi.mad.cint.is.hi.inet";
     'smartdc/mapi_username':       value => "admin";
     'smartdc/mapi_password':       value => "$mapi_password";
+    'smartdc/os_admin_uuid':       value => "6137f9bb-ca2a-484b-bd63-b59fa5266c15";
   }
 
   package { 'openstack-nova-smartos' :
